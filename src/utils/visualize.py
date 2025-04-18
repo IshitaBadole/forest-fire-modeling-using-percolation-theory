@@ -18,12 +18,26 @@ def display_binary_matrix(matrix):
 
     plt.show()
 
-# Example usage
-binary_matrix = [
-    [1, 0, 0, 1],
-    [0, 1, 1, 0],
-    [1, 1, 0, 0],
-    [0, 0, 1, 1]
-]
+# Taken from https://stackoverflow.com/a/25628397
+def get_cmap(n, name='hsv'):
+    '''Returns a function that maps each index in 0, 1, ..., n-1 to a distinct 
+    RGB color; the keyword argument name must be a standard mpl colormap name.'''
+    return plt.get_cmap(name, n)
 
-# display_binary_matrix(binary_matrix)
+def display_coloured_matrix(matrix):
+    matrix = np.array(matrix)
+
+    fig, ax = plt.subplots()
+    cmap = get_cmap(matrix.shape[0]*matrix.shape[1])
+    ax.imshow(matrix, cmap=cmap, interpolation='none')
+
+    # Add grid lines
+    ax.set_xticks(np.arange(-0.5, matrix.shape[1], 1), minor=True)
+    ax.set_yticks(np.arange(-0.5, matrix.shape[0], 1), minor=True)
+    ax.grid(which='minor', color='black', linestyle='-', linewidth=1)
+
+    # Turn off axis labels
+    ax.set_xticks([])
+    ax.set_yticks([])
+
+    plt.show()
