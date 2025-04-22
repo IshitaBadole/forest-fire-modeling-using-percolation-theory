@@ -1,5 +1,6 @@
 import numpy as np
 from utils.visualize import display_binary_matrix, display_coloured_matrix, get_cmap
+from collections import deque
 
 class Forest:
     def __init__(self, n : int = 10, p : float = 0.1):
@@ -11,39 +12,74 @@ class Forest:
         self.makegrid()
 
         self.groups = None
+        self.visited = np.zeros((self.n, self.n))
         self.makegroups()
         
 
     def makegrid(self):
         self.grid = np.where(self.random_grid < self.p, 1, 0)
+        self.visited = np.where(self.grid == 1, 1, 0)
 
     def printgrid(self):
         display_binary_matrix(self.grid)
     
-    def dfs(self, i : int, j : int, visited : np.ndarray, group : list):
-        if i < 0 or i >= self.n or j < 0 or j >= self.n or visited[i][j] == 1:
+    def dfs(self, i : int, j : int, group : list):
+        if i < 0 or i >= self.n or j < 0 or j >= self.n or self.visited[i][j] == 1:
             return
 
-        visited[i][j] = 1
+        self.visited[i][j] = 1
 
         if self.grid[i][j] == 0:
             group.append((i, j))
 
-            self.dfs(i + 1, j, visited, group)
-            self.dfs(i - 1, j, visited, group)
-            self.dfs(i, j + 1, visited, group)
-            self.dfs(i, j - 1, visited, group)
+            self.dfs(i + 1, j, group)
+            self.dfs(i - 1, j, group)
+            self.dfs(i, j + 1, group)
+            self.dfs(i, j - 1, group)
+    
+    def bfs(self, i, j, group):
+        queue = deque()
+
+        queue.append((i,j))
+        self.visited[i][j] = 1
+        group.append((i,j))
+
+        directions = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+
+
+        while queue:
+            cn = queue.popleft()
+            # print("Current node: %d" % cn)
+            
+            for direction in directions:
+                ni = cn[0] + direction[0]
+                nj = cn[1] + direction[1]
+
+                if ni < 0 or ni >= self.n or nj < 0 or nj >= self.n:
+                    continue
+
+                if self.visited[ni][nj] == 1:
+                    continue
+
+                if self.grid[ni][nj] == 0:
+                    queue.append((ni, nj))
+                    self.visited[ni][nj] = 1
+                    group.append((ni, nj))
+
+        return group
     
 
     def makegroups(self):
-        visited = np.zeros((self.n, self.n))
+        self.visited = np.zeros((self.n, self.n))
         groups = []
+
+        # Find connected components using BFS        
 
         for i in range(self.n):
             for j in range(self.n):
-                if self.grid[i][j] == 0 and visited[i][j] == 0:
+                if self.grid[i][j] == 0 and self.visited[i][j] == 0:
                     group = []
-                    self.dfs(i, j, visited, group)
+                    self.bfs(i, j, group)
                     groups.append(group)
         
         self.groups = groups
