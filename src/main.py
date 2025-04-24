@@ -35,8 +35,8 @@ def main():
         table[n_range[i]] = 1-p_range[(min(range(len(history[i])), key=lambda j: abs(history[i,j]-0.5)))]
 
     print(table)
-    # {8: 0.62, 16: 0.64, 32: 0.6699999999999999, 64: 0.72}
-    # {8: 0.61, 16: 0.6499999999999999, 32: 0.6799999999999999, 64: 0.71, 128: 0.74, 256: 0.77, 512: 0.81}
+    # For history_diagonal => {8: 0.62, 16: 0.64, 32: 0.6699999999999999, 64: 0.72}
+    # for history_diagonal2 => {8: 0.61, 16: 0.6499999999999999, 32: 0.6799999999999999, 64: 0.71, 128: 0.74, 256: 0.77, 512: 0.81}
 
     # print("Average number of groups for each n and p:")
     # for i, n in enumerate(n_range):
