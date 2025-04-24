@@ -3,9 +3,10 @@ from utils.visualize import display_binary_matrix, display_coloured_matrix, get_
 from collections import deque
 
 class Forest:
-    def __init__(self, n : int = 10, p : float = 0.1):
+    def __init__(self, n : int = 10, p : float = 0.1, diagnal : bool = False):
         self.n = n # Making an nxn grid
         self.p = p # prob of the cell being open
+        self.diagnal = diagnal # if True, the diagnal cells are also considered connected
 
         self.grid = None
         self.random_grid = np.random.uniform(0, 1, (self.n, self.n))
@@ -44,7 +45,10 @@ class Forest:
         self.visited[i][j] = 1
         group.append((i,j))
 
-        directions = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+        if not self.diagnal:
+            directions = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+        else:
+            directions = [(1, 0), (-1, 0), (0, 1), (0, -1), (1, 1), (1, -1), (-1, 1), (-1, -1)]
 
 
         while queue:
