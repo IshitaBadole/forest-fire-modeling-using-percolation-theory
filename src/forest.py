@@ -38,12 +38,13 @@ class Forest:
             self.dfs(i, j + 1, group)
             self.dfs(i, j - 1, group)
     
-    def bfs(self, i, j, group):
+    def bfs(self, i, j, group : int):
         queue = deque()
 
         queue.append((i,j))
         self.visited[i][j] = 1
-        group.append((i,j))
+        # group.append((i,j))
+        group += 1
 
         if not self.diagnal:
             directions = [(1, 0), (-1, 0), (0, 1), (0, -1)]
@@ -68,7 +69,8 @@ class Forest:
                 if self.grid[ni][nj] == 0:
                     queue.append((ni, nj))
                     self.visited[ni][nj] = 1
-                    group.append((ni, nj))
+                    # group.append((ni, nj))
+                    group += 1
 
         return group
     
@@ -82,8 +84,8 @@ class Forest:
         for i in range(self.n):
             for j in range(self.n):
                 if self.grid[i][j] == 0 and self.visited[i][j] == 0:
-                    group = []
-                    self.bfs(i, j, group)
+                    group = 0
+                    group = self.bfs(i, j, group)
                     groups.append(group)
         
         self.groups = groups

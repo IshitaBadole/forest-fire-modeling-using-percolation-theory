@@ -16,18 +16,18 @@ def main():
         for p in p_range:
             for i in range(iterations):
                 forest = Forest(n, p, True)
-                history[n_range.index(n)][p_range.index(p)] += np.mean([len(group) for group in forest.groups])
+                history[n_range.index(n)][p_range.index(p)] += np.sum([1 for group in forest.groups if group >= n*n/2])
         
-        history[n_range.index(n)] /= n*n
+        # history[n_range.index(n)] /= n*n
     
     history /= iterations
 
 
     
     # print(history.shape)
-    np.save("history_diagonal2.npy", history)
+    np.save("history_diagonal3.npy", history)
 
-    history = np.load("history_diagonal2.npy")
+    history = np.load("history_diagonal3.npy")
 
     table = {}
     for i in range(len(n_range)):
@@ -37,6 +37,7 @@ def main():
     print(table)
     # For history_diagonal => {8: 0.62, 16: 0.64, 32: 0.6699999999999999, 64: 0.72}
     # for history_diagonal2 => {8: 0.61, 16: 0.6499999999999999, 32: 0.6799999999999999, 64: 0.71, 128: 0.74, 256: 0.77, 512: 0.81}
+    # for history_diagonal3 => {8: 0.52, 16: 0.52, 32: 0.52, 64: 0.51, 128: 0.51, 256: 0.51, 512: 0.99}
 
     # print("Average number of groups for each n and p:")
     # for i, n in enumerate(n_range):
@@ -52,7 +53,7 @@ def main():
     ax.legend()
     ax.grid(linestyle='--', alpha=0.5)
     ax.axhline(n_critical, linestyle='--', color='k')
-    plt.savefig("average_groups_diagonal.png", dpi=300)
+    plt.savefig("count_largest_groups_diagonal.png", dpi=300)
     plt.show()
 
 
