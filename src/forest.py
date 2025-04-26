@@ -21,8 +21,8 @@ class Forest:
         self.grid = np.where(self.random_grid < self.p, 1, 0)
         self.visited = np.where(self.grid == 1, 1, 0)
 
-    def printgrid(self):
-        display_binary_matrix(self.grid)
+    def printgrid(self, file_name=None):
+        display_binary_matrix(self.grid, file_name)
     
     def dfs(self, i : int, j : int, group : list):
         if i < 0 or i >= self.n or j < 0 or j >= self.n or self.visited[i][j] == 1:
@@ -94,12 +94,17 @@ class Forest:
             print(f"Group {i}: {group}")
 
 
-    def printgroups(self):
+    def printgroups(self, file_name=None):
         cmap = get_cmap(len(self.groups), name='hsv')
         matrix = np.zeros((self.n, self.n))
         for i, group in enumerate(self.groups):
             for cell in group:
                 matrix[cell[0]][cell[1]] = i + 1
-        display_coloured_matrix(matrix)
+        display_coloured_matrix(matrix, file_name)
 
-
+if __name__ == "__main__":
+    n = 20
+    forest = Forest(n, 0.5, False)
+    forest.printgrid(f"grid_{n}x{n}.png")
+    forest.printgroups(f"coloured_grid_{n}x{n}.png")
+    # forest._debug_printgroups()

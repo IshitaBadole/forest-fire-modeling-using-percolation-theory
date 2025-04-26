@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-def display_binary_matrix(matrix):
+def display_binary_matrix(matrix, file_name=None):
     matrix = np.array(matrix)
 
     fig, ax = plt.subplots()
@@ -16,6 +16,9 @@ def display_binary_matrix(matrix):
     ax.set_xticks([])
     ax.set_yticks([])
 
+    if file_name:
+        plt.savefig(file_name, dpi=300)
+
     plt.show()
 
 # Taken from https://stackoverflow.com/a/25628397
@@ -24,7 +27,7 @@ def get_cmap(n, name='hsv'):
     RGB color; the keyword argument name must be a standard mpl colormap name.'''
     return plt.get_cmap(name, n)
 
-def display_coloured_matrix(matrix):
+def display_coloured_matrix(matrix, file_name=None):
     matrix = np.array(matrix)
 
     fig, ax = plt.subplots()
@@ -39,5 +42,8 @@ def display_coloured_matrix(matrix):
     # Turn off axis labels
     ax.set_xticks([])
     ax.set_yticks([])
+
+    if file_name:
+        plt.savefig(file_name, dpi=300)
 
     plt.show()
